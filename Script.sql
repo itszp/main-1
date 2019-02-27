@@ -2,6 +2,21 @@ drop table if exists Restaurants, SellFood, Addresses, Branches, Rating, Cuisine
 drop table if exists Serves, Reservation, Reserves, Points,GivesPoint, Users, Customer, Administrator;
 drop table if exists  UserHasPoints, Prefers, MakeReservation, Rates;
 
+create table Customers (
+	username 		varchar(50),
+	password		varchar(100),
+	cname			varchar(50),
+	phoneNo			varchar(20),
+	primary key (username)
+);
+
+create table Administators (
+	username 		varchar(50),
+	password		varchar(100),
+	aname			varchar(50),
+	phoneNo			varchar(20),
+	primary key (username)
+);
 
 create table Restaurants (
 rid serial primary key,
