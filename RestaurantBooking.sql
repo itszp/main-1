@@ -1,22 +1,6 @@
-drop table if exists Restaurants, SellFood, Addresses, Branches, Rating, Cuisine;
-drop table if exists Serves, Reservation, Reserves, Points,GivesPoint, Users, Customer, Administrator;
-drop table if exists  UserHasPoints, Prefers, MakeReservation, Rates;
-
-create table Customers (
-	username 		varchar(50),
-	password		varchar(100),
-	cname			varchar(50),
-	phoneNo			varchar(20),
-	primary key (username)
-);
-
-create table Administators (
-	username 		varchar(50),
-	password		varchar(100),
-	aname			varchar(50),
-	phoneNo			varchar(20),
-	primary key (username)
-);
+drop table if exists Restaurants, SellFood, Addresses, Branches, Rating, Cuisine cascade;
+drop table if exists Serves, Reservation, Reserves, Points,GivesPoint, Users, Customers, Administrators cascade;
+drop table if exists  UserHasPoints, Prefers, MakeReservation, Rates cascade;
 
 create table Restaurants (
 rid serial primary key,
@@ -39,9 +23,11 @@ primary key (postalCode, unitNo));
 create table Branches (
 openingTime time,
 closingTime time,
-addressesID varchar references Addresses(postalCode, unitNo),
+postalCode integer,
+unitNo varchar(10),
+FOREIGN KEY (postalCode, unitNo) REFERENCES Addresses (postalCode, unitNo),
 rid integer references Restaurants,
-primary key (addressesID, rid));
+primary key (postalCode, unitNo, rid));
 
 create table Rating (
 ratingid serial primary key,
@@ -82,12 +68,12 @@ create table Users (
 username varchar primary key,
 userPassword varchar); 
 
-create table Customer (
+create table Customers (
 username varchar primary key references Users on delete cascade,
 cname varchar,
 phoneNo varchar); 
 
-create table Administrator (
+create table Administrators (
 username varchar primary key references Users on delete cascade,
 aname varchar,
 phoneNo varchar); 
@@ -100,7 +86,7 @@ primary key (pid, userName));
 create table Prefers (
 maxPrice integer,
 arealocation varchar,
-cuisineType integer references Cuisine,
+cuisineType varchar references Cuisine,
 userName varchar references Users,
 primary key (cuisineType, userName)); 
 
