@@ -3,35 +3,70 @@ drop table if exists Serves, Reservation, Reserves, Points,GivesPoint, Users, Cu
 drop table if exists  UserHasPoints, Prefers, MakeReservation, Rates cascade;
 
 create table Restaurants (
-rid serial primary key,
+rid integer,
 rname varchar,		
-totalSeats integer);
+totalSeats integer
+primary key (rid)
+);
 
-create table SellFood (
+create table Food (
 fname varchar,
-price numeric,
-restid integer references Restaurants on delete cascade,
-primary key (restid,fname));
+price numeric(38, 2),
+rid integer references Restaurants on delete cascade,
+primary key (rid,fname)
+);
 
 create table Addresses (
 postalCode integer,
 unitNo varchar(10),
-arealocation date,
-streetName date,
-primary key (postalCode, unitNo));
+area varchar(100),
+streetName varchar(50),
+primary key (postalCode, unitNo)
+);
 
 create table Branches (
+rid integer,
 openingTime time,
 closingTime time,
 postalCode integer,
 unitNo varchar(10),
-FOREIGN KEY (postalCode, unitNo) REFERENCES Addresses (postalCode, unitNo),
-rid integer references Restaurants,
-primary key (postalCode, unitNo, rid));
+foreign key (postalCode, unitNo) references Addresses (postalCode, unitNo),
+foreign key (rid) references Restaurants,
+primary key (postalCode, unitNo, rid),
+unique (postalCode, unitNo)
+);
 
-create table Rating (
-ratingid serial primary key,
-review varchar);
+create table Ratings (
+ratingid integer,
+userid integer,
+rid integer,
+review varchar,
+primary key (ratingid)
+foreign key (userid) references Users,
+foreign key (rid) references Restaurant
+);
+
+create table Reservation (
+rsvid integer,
+rsvDate date,
+rsvTime time,
+numOfPeople integer,
+status varchar,
+userid integer,
+pid integer,
+primary key (rsvid),
+foreign key userid references Users
+foreign key pid references Points
+); 
+
+create table Reserves (
+rid integer
+rsvid integer
+reservesDate date,
+seatsAvailable integer,
+rsvid integer references Reservation,
+rid integer references Restaurants,
+primary key (rsvid, rid)); 
 
 create table Cuisine (
 cuisineType varchar primary key);
@@ -41,19 +76,6 @@ cuisineType varchar references Cuisine,
 rid integer references Restaurants,
 primary key (cuisineType, rid)); 
 
-create table Reservation (
-rsvid serial primary key,
-reservationDate date,
-reservationtime time,
-numOfDiner integer,
-status varchar); 
-
-create table Reserves (
-reservesDate date,
-seatsAvailable integer,
-rsvid integer references Reservation,
-rid integer references Restaurants,
-primary key (rsvid, rid)); 
 
 create table Points (
 pid serial primary key,
@@ -95,9 +117,3 @@ create table MakeReservation (
 username varchar references Users,
 rsvid integer references Reservation,
 primary key (username, rsvid)); 
-
-create table Rates (
-username varchar references Users,
-rsvid integer references Reservation,
-ratingid integer references Rating,
-primary key (username, rsvid, ratingid)); 
