@@ -95,30 +95,25 @@ cuisineType varchar (50),
 primary key (cuisideType)
 );
 
-create table Customers (
-username varchar primary key references Users on delete cascade,
-cname varchar,
-phoneNo varchar); 
+create table Preferences (
+prefid integer,
+area varchar(50) not null,
+maxPrice integer not null,
+minScore integer not null,
+userid integer not null,
+cuisineType varchar(50) not null,
+primary key (prefid),
+foreign key (cuisineType) references Cuisines,
+foreign key (userid) references Members,
+unique (prefid, userid, area)
+); 
 
-create table Administrators (
-username varchar primary key references Users on delete cascade,
-aname varchar,
-phoneNo varchar); 
+create table Members (
+userid integer,
+primary key (userid)
+);
 
-create table UserHasPoints (
-pid integer references Points,
-userName varchar references Users,
-primary key (pid, userName)); 
-
-create table Prefers (
-maxPrice integer,
-arealocation varchar,
-cuisineType varchar references Cuisine,
-userName varchar references Users,
-primary key (cuisineType, userName)); 
-
-
-create table MakeReservation (
-username varchar references Users,
-rsvid integer references Reservation,
-primary key (username, rsvid)); 
+create table Guests (
+userid integer,
+primary key (userid)
+);
