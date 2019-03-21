@@ -1,6 +1,6 @@
-drop table if exists Restaurants, SellFood, Addresses, Branches, Rating, Cuisine cascade;
-drop table if exists Serves, Reservation, Reserves, Points,GivesPoint, Users, Customers, Administrators cascade;
-drop table if exists  UserHasPoints, Prefers, MakeReservation, Rates cascade;
+drop table if exists Restaurants, Outlets, Ratings, Cuisines cascade;
+drop table if exists Reservations, Reserves, Points, Users, Members, Guests cascade;
+drop table if exists  Preferences, Food cascade;
 
 create table Restaurants (
 rid integer,
@@ -19,25 +19,32 @@ primary key (rid,fname),
 foreign key (rid) references Restaurants on delete cascade
 );
 
-create table Addresses (
+create table Outlets (
+outid integer,
 postalCode integer not null,
 unitNo varchar(10) not null,
 area varchar(100) not null,
-streetName varchar(50) not null,
-primary key (postalCode, unitNo)
-);
-
-create table Branches (
-rid integer,
 openingTime time not null,
 closingTime time not null,
-postalCode integer,
-unitNo varchar(10),
-primary key (postalCode, unitNo, rid),
-foreign key (postalCode, unitNo) references Addresses (postalCode, unitNo),
+totalSeats integer not null,
+rid integer not null,
+rsvid integer not null,
+primary key (outid),
 foreign key (rid) references Restaurants,
+foreign key (rsvid) references Reservations,
 unique (postalCode, unitNo)
 );
+
+create table Reserves (
+seatsAvailable integer not null, 
+outDate date not null,
+outTime time not null,
+outid integer not null,
+rsvid integer not null,
+outid integer references Outlets,
+rsvid integer references Reservation,
+primary key (rsvid, outid, outDate, outTime)
+); 
 
 create table Ratings (
 ratingid integer,
@@ -70,16 +77,6 @@ fullName varchar (50) not null,
 phoneNo varchar unique not null,
 primary key (userid)
 );
-
-create table Reserves (
-seatsAvailable integer not null, 
-rdate date not null,
-rid integer,
-rsvid integer,
-rid integer references Restaurants,
-rsvid integer references Reservation,
-primary key (rsvid, rid, rdate)
-); 
 
 create table Points (
 pid integer,
