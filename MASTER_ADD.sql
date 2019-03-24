@@ -1,10 +1,11 @@
+DELETE FROM Reservations;
 DELETE FROM Food;
 DELETE FROM Seats;
 DELETE FROM Ratings;
 Delete from Outlets;
 DELETE FROM Restaurants;
 DELETE FROM Cuisines;
-delete from Members;
+DELETE from Members;
 delete from Guests;
 delete from Users;
 
@@ -160,3 +161,7 @@ INSERT INTO Food (rid, fname, price) VALUES
 (5, 'Chocolate Milkshake', 3),
 (5, 'Vanilla Milkshake', 3),
 (5, 'Edi Burger', 4.50);
+
+INSERT INTO Reservations (rsvid, userid, outid, rsvdate, rsvHour, numOfPeople) VALUES
+(1, 1, 1, '24-03-2019', '20:00', 5), 
+(2, 1, 4, '24-03-2019', '14:00', 2);
