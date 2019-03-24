@@ -1,3 +1,4 @@
+DELETE FROM Food;
 DELETE FROM Seats;
 DELETE FROM Ratings;
 Delete from Outlets;
@@ -29,7 +30,7 @@ INSERT INTO Cuisines (cuisineType) VALUES
 
 INSERT INTO Restaurants (rid, rname, cuisineType) VALUES
 (1, 'HaiDiLao', 'Chinese'),
-(2, 'FatBoys', 'Western'),
+(2, 'FatBoy', 'Western'),
 (3, 'VeggieBurgs', 'Vegetarian'),
 (4, 'GenkiSushi', 'Japanese'),
 (5, 'MosBurger', 'FastFood');
@@ -139,3 +140,23 @@ INSERT INTO Seats (outid, openingHour, openingDate, seatsAvailable) VALUES
 (6, '19:00', '24-03-2019', 100),
 (6, '20:00', '24-03-2019', 100),
 (6, '21:00', '24-03-2019', 100);
+
+
+INSERT INTO Food (rid, fname, price) VALUES
+(1, '2-soup Steamboat', 18),
+(1, '1-soup Steamboat', 15),
+(1, 'Premium Beef', 21),
+(1, 'Premium Black Pork', 28),
+(2, 'Original FatBoy Burger', 21),
+(2, 'Cheese Fries', 8),
+(3, 'Soya Milk', 4),
+(3, 'Cheese Fries', 6),
+(3, 'Eggs Benedict', 12),
+(3, 'Garden Burger', 10),
+(4, 'Salmon Sashimi', 8),
+(4, 'Garlic Soba', 4),
+(4, 'Chawanmusi', 3.50),
+(4, 'Chirashi Don', 12.50),
+(5, 'Chocolate Milkshake', 3),
+(5, 'Vanilla Milkshake', 3),
+(5, 'Edi Burger', 4.50);

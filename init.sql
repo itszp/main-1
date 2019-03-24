@@ -51,27 +51,6 @@ create table Users
     primary key (userid)
 );
 
-create table Reservations
-(
-    rsvid integer,
-    rsvDate date not null,
-    rsvHour time not null,
-    numOfPeople integer not null,
-    userid integer,
-    primary key (rsvid),
-    foreign key (userid) references Users
-);
-
-create table Points
-(
-    pid integer,
-    pointNumber integer not null,
-    rsvid integer references Reservations,
-    userid integer references Members,
-    primary key (pid),
-    unique (pid, userid, rsvid)
-);
-
 create table Outlets
 (
     outid integer,
@@ -95,6 +74,29 @@ create table Seats
     seatsAvailable integer,
     primary key (outid, openingHour, openingDate),
     foreign key (outid) references Outlets
+);
+
+create table Reservations
+(
+    rsvid integer,
+    userid integer,
+    outid integer not null,
+    rsvDate date not null,
+    rsvHour time not null,
+    numOfPeople integer not null,
+    primary key (rsvid),
+    foreign key (userid) references Users,
+    foreign key(outid, rsvDate, rsvHour) references Seats (outid, openingDate, openingHour)
+);
+
+create table Points
+(
+    pid integer,
+    pointNumber integer not null,
+    rsvid integer references Reservations,
+    userid integer references Members,
+    primary key (pid),
+    unique (pid, userid, rsvid)
 );
 
 create table Reserves
