@@ -1,6 +1,6 @@
 drop table if exists Restaurants, Outlets, Ratings, Cuisines
 cascade;
-drop table if exists Reservations, Reserves, Points, Users, Members, Guests
+drop table if exists Reservations, Reserves, Points, Users, Members, Guests 
 cascade;
 drop table if exists  Preferences, Food, Seats
 cascade;
@@ -27,7 +27,6 @@ create table Restaurants
 (
     rid integer,
     rname varchar (50) not null,
-    totalSeats integer not null,
     cuisineType varchar(50) not null,
     primary key (rid),
     foreign key (cuisineType) references Cuisines
@@ -52,37 +51,16 @@ create table Users
     primary key (userid)
 );
 
-create table Reservations
-(
-    rsvid integer,
-    rsvDate date not null,
-    rsvHour time not null,
-    numOfPeople integer not null,
-    userid integer,
-    primary key (rsvid),
-    foreign key (userid) references Users
-);
-
-create table Points
-(
-    pid integer,
-    pointNumber integer not null,
-    rsvid integer references Reservations,
-    userid integer references Members,
-    primary key (pid),
-    unique (pid, userid, rsvid)
-);
-
 create table Outlets
 (
     outid integer,
-    postalCode integer not null,
-    unitNo varchar(10) not null,
+    rid integer not null,
+    postalCode varchar(6) not null,
+    unitNo varchar(10),
     area varchar(100) not null,
     openingTime time not null,
     closingTime time not null,
     totalSeats integer not null,
-    rid integer not null,
     primary key (outid),
     foreign key (rid) references Restaurants,
     unique (postalCode, unitNo)
@@ -96,6 +74,29 @@ create table Seats
     seatsAvailable integer,
     primary key (outid, openingHour, openingDate),
     foreign key (outid) references Outlets
+);
+
+create table Reservations
+(
+    rsvid integer,
+    userid integer,
+    outid integer not null,
+    rsvDate date not null,
+    rsvHour time not null,
+    numOfPeople integer not null,
+    primary key (rsvid),
+    foreign key (userid) references Users,
+    foreign key(outid, rsvDate, rsvHour) references Seats (outid, openingDate, openingHour)
+);
+
+create table Points
+(
+    pid integer,
+    pointNumber integer not null,
+    rsvid integer references Reservations,
+    userid integer references Members,
+    primary key (pid),
+    unique (pid, userid, rsvid)
 );
 
 create table Reserves
@@ -112,11 +113,11 @@ create table Reserves
 
 create table Ratings
 (
-    ratingid integer,
-    review varchar(255),
+    ratingid serial,
     userid integer,
     rid integer,
     ratingscore integer not null,
+    review varchar(255),
     primary key (ratingid),
     foreign key (userid) references Users,
     foreign key (rid) references Restaurants

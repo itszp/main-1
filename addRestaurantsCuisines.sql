@@ -9,9 +9,9 @@ INSERT INTO Cuisines (cuisineType) VALUES
 ('Japanese');
 
 
-INSERT INTO Restaurants (rid, rname, totalSeats, cuisineType) VALUES
-(1, 'HaiDiLao', 100, 'Chinese'),
-(2, 'FatBoys', 30, 'Western'),
-(3, 'VeggieBurgs', 30, 'Vegetarian'),
-(4, 'GenkiGenki', 50, 'Japanese'),
-(5, 'MosBurger', 50, 'FastFood');
+INSERT INTO Restaurants (rid, rname, cuisineType) VALUES
+(1, 'HaiDiLao', 'Chinese'),
+(2, 'FatBoys', 'Western'),
+(3, 'VeggieBurgs', 'Vegetarian'),
+(4, 'GenkiGenki', 'Japanese'),
+(5, 'MosBurger', 'FastFood');
