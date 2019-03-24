@@ -111,11 +111,11 @@ create table Reserves
 
 create table Ratings
 (
-    ratingid integer,
-    review varchar(255),
+    ratingid serial,
     userid integer,
     rid integer,
     ratingscore integer not null,
+    review varchar(255),
     primary key (ratingid),
     foreign key (userid) references Users,
     foreign key (rid) references Restaurants
