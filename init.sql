@@ -85,8 +85,7 @@ create table Reservations
     rsvHour time not null,
     numOfPeople integer not null,
     primary key (rsvid),
-    foreign key (userid) references Users,
-    foreign key(outid, rsvDate, rsvHour) references Seats (outid, openingDate, openingHour)
+    foreign key (userid) references Users
 );
 
 create table Points
@@ -102,13 +101,9 @@ create table Points
 create table Reserves
 (
     rsvid integer,
-	seatsAssigned integer not null,
-    outid integer not null,
-    openingHour time not null,
-    openingDate date not null,
+    seatsAssigned integer not null,
     primary key (rsvid),
-    foreign key (rsvid) references Reservations,
-    foreign key (outid, openingHour, openingDate) references Seats (outid, openingHour, openingDate)
+    foreign key (rsvid) references Reservations 
 );
 
 create table Ratings

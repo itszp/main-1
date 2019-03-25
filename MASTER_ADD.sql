@@ -1,3 +1,4 @@
+DELETE FROM Reserves;
 DELETE FROM Reservations;
 DELETE FROM Food;
 DELETE FROM Seats;
@@ -163,5 +164,9 @@ INSERT INTO Food (rid, fname, price) VALUES
 (5, 'Edi Burger', 4.50);
 
 INSERT INTO Reservations (rsvid, userid, outid, rsvdate, rsvHour, numOfPeople) VALUES
-(1, 1, 1, '24-03-2019', '20:00', 5), 
-(2, 1, 4, '24-03-2019', '14:00', 2);
+(1, 1, 1, '24-03-2019', '20:00', 25), 
+(2, 2, 1, '24-03-2019', '20:00', 5),
+(3, 3, 4, '24-03-2019', '14:00', 2);
+
+INSERT INTO Reserves (rsvid, seatsAssigned) VALUES
+(1, 25);

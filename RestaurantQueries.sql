@@ -32,3 +32,17 @@ group by rname
 select rname, max(price) as maxPrice
 from Restaurants natural join Food
 group by rname
+
+-- get number of seats assigned at particular outlet, date and time
+SELECT sum(seatsAssigned)
+    FROM Reserves natural join Reservations
+    WHERE Reservations.outid = '1'
+    and Reservations.rsvDate = '24-03-2019'
+    and Reservations.rsvHour = '20:00';
+    
+-- totalSeats available at particular outlet, date and time  
+SELECT seatsAvailable
+    FROM Seats 
+    WHERE Seats.outid = '1' 
+    AND Seats.openingDate = '24-03-2019'
+    AND Seats.openingHour = '20:00';
