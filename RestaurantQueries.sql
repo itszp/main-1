@@ -35,7 +35,7 @@ group by rname
 
 -- get number of seats assigned at particular outlet, date and time
 SELECT sum(seatsAssigned)
-    FROM Reserves natural join Reservations
+    FROM Reservations
     WHERE Reservations.outid = '1'
     and Reservations.rsvDate = '24-03-2019'
     and Reservations.rsvHour = '20:00';

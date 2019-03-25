@@ -1,6 +1,6 @@
 drop table if exists Restaurants, Outlets, Ratings, Cuisines
 cascade;
-drop table if exists Reservations, Reserves, Points, Users, Members, Guests 
+drop table if exists Reservations, Points, Users, Members, Guests 
 cascade;
 drop table if exists  Preferences, Food, Seats
 cascade;
@@ -83,7 +83,7 @@ create table Reservations
     outid integer not null,
     rsvDate date not null,
     rsvHour time not null,
-    numOfPeople integer not null,
+    seatsAssigned integer not null,
     primary key (rsvid),
     foreign key (userid) references Users
 );
@@ -96,14 +96,6 @@ create table Points
     userid integer references Members,
     primary key (pid),
     unique (pid, userid, rsvid)
-);
-
-create table Reserves
-(
-    rsvid integer,
-    seatsAssigned integer not null,
-    primary key (rsvid),
-    foreign key (rsvid) references Reservations 
 );
 
 create table Ratings
