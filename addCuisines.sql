@@ -5,4 +5,5 @@ INSERT INTO Cuisines (cuisineType) VALUES
 ('Western'),
 ('Vegetarian'),
 ('FastFood'),
-('Japanese');
+('Japanese'),
+('Buffet');

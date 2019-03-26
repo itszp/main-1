@@ -2,7 +2,7 @@ drop table if exists Restaurants, Outlets, Ratings, Cuisines
 cascade;
 drop table if exists Reservations, Points, Users, Members, Guests 
 cascade;
-drop table if exists  Preferences, Food, Seats
+drop table if exists  Preferences, Food, Seats, Serves
 cascade;
 
 create table Members
@@ -27,8 +27,15 @@ create table Restaurants
 (
     rid integer,
     rname varchar (50) not null,
-    cuisineType varchar(50) not null,
-    primary key (rid),
+    primary key (rid)
+);
+
+create table Serves 
+(
+    rid integer,
+    cuisineType varchar(50),
+    primary key (rid, cuisineType),
+    foreign key (rid) references Restaurants,
     foreign key (cuisineType) references Cuisines
 );
 
@@ -55,15 +62,24 @@ create table Outlets
 (
     outid integer,
     rid integer not null,
-    postalCode varchar(6) not null,
-    unitNo varchar(10),
-    area varchar(100) not null,
     openingTime time not null,
     closingTime time not null,
     totalSeats integer not null,
     primary key (outid),
+    foreign key (rid) references Restaurants
+);
+
+create table Branches
+( 
+    rid integer,
+    outid integer,
+    postalCode varchar(6) not null,
+    unitNo varchar(10),
+    area varchar(100) not null,
+    primary key (rid, outid),
     foreign key (rid) references Restaurants,
-    unique (postalCode, unitNo)
+    foreign key (outid) references Outlets
+    
 );
 
 create table Seats

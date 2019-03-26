@@ -1,6 +1,6 @@
 -- All restaurants in Central area
 select rname
-from Restaurants natural join Outlets
+from Restaurants natural join Branches
 where area = 'Central';
 
 -- Display restaurant and their average ratings
@@ -15,7 +15,7 @@ where R.rname = 'HaiDiLao';
 
 -- Filter by cuisineTypes
 select rname 
-from Restaurants
+from Restaurants natural join Serves
 where cuisineType = 'Chinese';
 
 -- Check seats available of outlet on openingDate
