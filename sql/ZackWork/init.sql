@@ -125,15 +125,13 @@ create table Ratings
     foreign key (rid) references Restaurants
 );
 
-
 create table Preferences
 (
-    userid integer not null,
-    cuisineType varchar(64),
-    area varchar(64) not null,
-    maxPrice integer,
+    userid integer,
+    area varchar(64),
+    maxPrice numeric(8, 2),
+    avgPrice numeric(8, 2),
     minScore integer,
-    primary key (userid, area),
-    foreign key (cuisineType) references Cuisines,
+    primary key (userid),
     foreign key (userid) references Members
 ); 
