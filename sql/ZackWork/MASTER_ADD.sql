@@ -1,20 +1,22 @@
+DELETE FROM Preferences;
+DELETE FROM Points;
 DELETE FROM Reservations;
 DELETE FROM Food;
 DELETE FROM Seats;
 DELETE FROM Ratings;
 DELETE FROM Branches;
-Delete from Outlets;
+DELETE FROM Outlets;
 DELETE FROM Serves;
 DELETE FROM Restaurants;
 DELETE FROM Cuisines;
-DELETE from Members;
-delete from Guests;
-delete from Users;
+DELETE FROM Members;
+DELETE FROM Guests;
+DELETE FROM Users;
 
 
 INSERT INTO Users (userid, username, userpassword, fullname, phoneNo) VALUES
 (1, 'itszp', 'password', 'Zack Tay', '92210389'), 
-(2, 'anyhowtouch', 'password', 'Monica Cheng',' 83321345'),
+(2, 'anyhowtouch', 'password', 'Monica Cheng', '83321345'),
 (3, 'guest1', 'password', 'Lim Ko Pi', '63335333');
 
 INSERT INTO Members (userid) VALUES
@@ -192,3 +194,15 @@ INSERT INTO Reservations (rsvid, userid, outid, rsvdate, rsvHour, seatsAssigned)
 (1, 1, 1, '24-03-2019', '20:00', 25), 
 (2, 2, 1, '24-03-2019', '20:00', 5),
 (3, 3, 4, '24-03-2019', '14:00', 2);
+
+INSERT INTO Points (pointNumber, rsvid, userid) VALUES
+(50, 1, 1),
+(20, 2, 2);
+
+INSERT INTO Preferences (userid, area, cuisineType, maxPrice, minScore) VALUES
+(1, 'CENTRAL', null, null, 3),
+(1, 'WEST', null, null, null),
+(2, 'EAST', 'Japanese', null, null);
+ 
+
+

@@ -2,7 +2,7 @@ drop table if exists Restaurants, Outlets, Ratings, Cuisines
 cascade;
 drop table if exists Reservations, Points, Users, Members, Guests 
 cascade;
-drop table if exists  Preferences, Food, Seats, Serves
+drop table if exists  Preferences, Food, Seats, Serves, Branches
 cascade;
 
 create table Members
@@ -19,21 +19,21 @@ create table Guests
 
 create table Cuisines
 (
-    cuisineType varchar (50),
+    cuisineType varchar (64),
     primary key (cuisineType)
 );
 
 create table Restaurants
 (
     rid integer,
-    rname varchar (50) not null,
+    rname varchar (64) not null,
     primary key (rid)
 );
 
 create table Serves 
 (
     rid integer,
-    cuisineType varchar(50),
+    cuisineType varchar(64),
     primary key (rid, cuisineType),
     foreign key (rid) references Restaurants,
     foreign key (cuisineType) references Cuisines
@@ -42,8 +42,8 @@ create table Serves
 create table Food
 (
     rid integer,
-    fname varchar (50) not null,
-    price numeric(38, 2) not null,
+    fname varchar (64) not null,
+    price numeric(8, 2) not null,
     primary key (rid,fname),
     foreign key (rid) references Restaurants on delete cascade
 );
@@ -51,10 +51,10 @@ create table Food
 create table Users
 (
     userid integer,
-    username varchar(50) unique not null,
-    userpassword varchar(100) not null,
-    fullName varchar (50) not null,
-    phoneNo varchar unique not null,
+    username varchar(64) unique not null,
+    userpassword varchar(64) not null,
+    fullName varchar (64) not null,
+    phoneNo varchar (32) unique not null,
     primary key (userid)
 );
 
@@ -74,8 +74,8 @@ create table Branches
     rid integer,
     outid integer,
     postalCode varchar(6) not null,
-    unitNo varchar(10),
-    area varchar(100) not null,
+    unitNo varchar(16),
+    area varchar(128) not null,
     primary key (rid, outid),
     foreign key (rid) references Restaurants,
     foreign key (outid) references Outlets
@@ -106,12 +106,11 @@ create table Reservations
 
 create table Points
 (
-    pid integer,
+    pid serial,
     pointNumber integer not null,
     rsvid integer references Reservations,
     userid integer references Members,
-    primary key (pid),
-    unique (pid, userid, rsvid)
+    primary key (pid)
 );
 
 create table Ratings
@@ -120,22 +119,21 @@ create table Ratings
     userid integer,
     rid integer,
     ratingscore integer not null,
-    review varchar(255),
+    review varchar(1024),
     primary key (ratingid),
     foreign key (userid) references Users,
     foreign key (rid) references Restaurants
 );
 
+
 create table Preferences
 (
-    prefid integer,
-    area varchar(50) not null,
-    maxPrice integer not null,
-    minScore integer not null,
     userid integer not null,
-    cuisineType varchar(50) not null,
-    primary key (prefid),
+    cuisineType varchar(64),
+    area varchar(64) not null,
+    maxPrice integer,
+    minScore integer,
+    primary key (userid, area),
     foreign key (cuisineType) references Cuisines,
-    foreign key (userid) references Members,
-    unique (prefid, userid, area)
+    foreign key (userid) references Members
 ); 
