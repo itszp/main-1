@@ -3,6 +3,7 @@ DELETE FROM Food;
 DELETE FROM Seats;
 DELETE FROM Ratings;
 Delete from Outlets;
+DELETE FROM Serves;
 DELETE FROM Restaurants;
 DELETE FROM Cuisines;
 DELETE from Members;
@@ -27,14 +28,26 @@ INSERT INTO Cuisines (cuisineType) VALUES
 ('Western'),
 ('Vegetarian'),
 ('FastFood'),
-('Japanese');
+('Japanese'),
+('Buffet');
 
-INSERT INTO Restaurants (rid, rname, cuisineType) VALUES
-(1, 'HaiDiLao', 'Chinese'),
-(2, 'FatBoy', 'Western'),
-(3, 'VeggieBurgs', 'Vegetarian'),
-(4, 'GenkiSushi', 'Japanese'),
-(5, 'MosBurger', 'FastFood');
+INSERT INTO Restaurants (rid, rname) VALUES
+(1, 'HaiDiLao'),
+(2, 'FatBoys'),
+(3, 'VeggieBurgs'),
+(4, 'GenkiGenki'),
+(5, 'MosBurger'),
+(6, 'ShabuShabu');
+
+
+INSERT INTO Serves (rid, cuisineType) VALUES
+(1, 'Chinese'),
+(2, 'Western'),
+(3, 'Vegetarian'),
+(4, 'Japanese'),
+(5, 'FastFood'),
+(6, 'Chinese'),
+(6, 'Buffet');
 
 INSERT INTO  Outlets (outid, rid, totalSeats, area, unitNo, postalCode, openingTime, closingTime) VALUES
 (1, 1, 100, 'Central', '03-01', '012422', '12:00', '23:00'),
@@ -43,7 +56,8 @@ INSERT INTO  Outlets (outid, rid, totalSeats, area, unitNo, postalCode, openingT
 (4, 4, 50, 'East', '03-43', '431760', '11:00', '22:00'),
 (5, 5, 40, 'Central', '01-31', '310213', '09:00', '22:00'),
 (6, 5, 40, 'North', '02-16', '221638', '09:00', '22:00'),
-(7, 1, 80, 'South', '04-11', '512318', '12:00', '23:00');
+(7, 1, 80, 'South', '04-11', '512318', '12:00', '23:00'),
+(8, 6, 80, 'Central', '03-11', '021568', '11:00', '22:00');;
 
 INSERT INTO Ratings (rid, userid, ratingscore, review) VALUES
 (1, 1, 5, 'World-class service'),

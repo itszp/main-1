@@ -15,7 +15,7 @@ where R.rname = 'HaiDiLao';
 
 -- Filter by cuisineTypes
 select rname 
-from Restaurants
+from Restaurants natural join Serves
 where cuisineType = 'Chinese';
 
 -- Check seats available of outlet on openingDate
