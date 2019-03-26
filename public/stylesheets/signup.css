@@ -1,0 +1,84 @@
+.bg-3 { 
+      background-color: #000000;
+      color: #555555;
+}
+
+body {
+	background-color: black;
+}
+
+.Page {
+	align-items: center;
+	position: relative;
+	text-align: center;
+	--left: 50%;
+}
+
+.navbar {
+	background-color: #000000;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    letter-spacing: 5px;
+}
+
+.form-group {
+  margin: 30px auto;
+  font-size: 12px;
+}
+
+a.button {
+  width: 150px;
+  background-color: black;
+  color: #FFD700;
+  padding: 15px 25px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+button {
+  background-color: #FFD700;
+  color: black;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+  width: 80%;
+  font-size: 12px;
+  letter-spacing: 5px;
+  border-radius: 12px;
+}
+
+input[type=text], input[type=password] {
+  width: 500px;
+  padding: 12px 20px;
+  --margin: 8px auto;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+}
+
+button[type=submit], button[type=cancel]{
+  width: 200px;
+  background-color: black;
+  color: #FFD700;
+  padding: 15px 25px;
+  display: inline-block;
+  border: 1px solid #ccc;
+}
+
+label {
+	display: block;
+	color: #FFD700;
+	font-size: 15px;
+}
+
+img.logo{
+  width: 10%;
+  height: 10%;
+}
