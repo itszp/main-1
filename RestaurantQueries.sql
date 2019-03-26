@@ -1,6 +1,6 @@
 -- All restaurants in Central area
 select rname
-from Restaurants natural join Outlets
+from Restaurants natural join Branches
 where area = 'Central';
 
 -- Display restaurant and their average ratings
