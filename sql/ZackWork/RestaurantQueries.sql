@@ -47,7 +47,5 @@ SELECT seatsAvailable
     AND Seats.openingDate = '24-03-2019'
     AND Seats.openingHour = '20:00';
     
-   
-SELECT * FROM Restaurants natural join Outlets natural join Seats
-
-select * from preferences natural join Users
+-- Display all restaurants based on  
+ 
