@@ -37,7 +37,7 @@ sql.query = {
 	// Restaurants & Outlets queries
 	display_res_and_avgRating: 'select R.rid as rid, R.rname as rname, case when count(*) > 1 then sum(ratingscore)/(count(*)-1) else 0 end as averageScore from Restaurants R natural join Ratings RT group by R.rid, R.rname;',
 	display_res_reviews: 'select R.rname, RT.review from Restaurants R natural join Ratings RT where R.rname = $1;',
-	display_res_and_avgprice: 'select rname, avg(price) as averagePrice from Restaurants natural join Food group by rname1;',
+	display_res_and_avgprice: 'select rname, avg(price) as averagePrice from Restaurants natural join Food group by rname;',
 	display_res_and_maxprice: 'select rname, max(price) as maxPrice from Restaurants natural join Food group by rname;',
 	
 	// User points queries

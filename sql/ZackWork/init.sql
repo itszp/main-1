@@ -2,7 +2,7 @@ drop table if exists Restaurants, Outlets, Ratings, Cuisines
 cascade;
 drop table if exists Reservations, Points, Users, Members, Guests 
 cascade;
-drop table if exists  Preferences, Food, Seats, Serves, Branches
+drop table if exists  Preferences, Food, Seats, Serves, Branches, Opens
 cascade;
 
 create table Members
@@ -82,6 +82,14 @@ create table Branches
     
 );
 
+create table Opens
+(
+    outid integer,
+    openingDate date,
+    primary key (outid, openingDate),
+    foreign key (outid) references Outlets
+);
+
 create table Seats
 (
     outid integer not null,
@@ -89,7 +97,7 @@ create table Seats
     openingDate date not null,
     seatsAvailable integer,
     primary key (outid, openingHour, openingDate),
-    foreign key (outid) references Outlets
+    foreign key (outid, openingDate) references Opens
 );
 
 create table Reservations

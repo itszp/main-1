@@ -11,7 +11,7 @@ BEGIN
     AND NEW.rsvdate = Seats.openingDate;
 
     SELECT sum(seatsAssigned) INTO seatsTaken
-    FROM Reservations
+    FROM Reservationsa
     WHERE New.outid = Reservations.outid
     AND NEW.rsvHour = Reservations.rsvHour
     AND NEW.rsvdate = Reservations.rsvDate;
