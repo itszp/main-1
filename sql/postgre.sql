@@ -1,12 +1,30 @@
+delete from serves;
+delete from branches;
+delete from outlets;
+delete from food;
+delete from ratings;
+delete from restaurants;
+delete from users;
+
+CREATE VIEW OutletInfo (rname, outid, area, totalSeats, openingTime, closingTime, maxPrice) as 
+    with RestaurantMaxMenu as (
+        select R.rid, R.rname, max(price) as maxPrice
+        from Restaurants R natural join Food
+        group by R.rid
+    )
+
+    select R.rname, O.outid, B.area, O.totalseats, O.openingtime, O.closingtime, maxPrice
+    from Outlets O natural join Restaurants R natural join Branches B join RestaurantMaxMenu RMax on R.rid = Rmax.rid;
+
 create table Members
 (
-    userid integer,
+    userid uuid,
     primary key (userid)
 );
 
 create table Guests
 (
-    userid integer,
+    userid uuid,
     primary key (userid)
 );
 
@@ -16,16 +34,25 @@ create table Cuisines
     primary key (cuisineType)
 );
 
+insert into Cuisines values ('Western');
+insert into Cuisines values ('Japanese');
+insert into Cuisines values ('Korean');
+insert into Cuisines values ('Fast Food');
+insert into Cuisines values ('Chinese');
+insert into Cuisines values ('Thai');
+insert into Cuisines values ('Buffet');
+insert into Cuisines values ('Steamboat');
+
 create table Restaurants
 (
-    rid integer,
+    rid uuid,
     rname varchar (64) not null,
     primary key (rid)
 );
 
 create table Serves 
 (
-    rid integer,
+    rid uuid,
     cuisineType varchar(64),
     primary key (rid, cuisineType),
     foreign key (rid) references Restaurants,
@@ -34,7 +61,7 @@ create table Serves
 
 create table Food
 (
-    rid integer,
+    rid uuid,
     fname varchar (64) not null,
     price numeric(8, 2) not null,
     primary key (rid,fname),
@@ -43,7 +70,7 @@ create table Food
 
 create table Users
 (
-    userid integer,
+    userid uuid,
     username varchar(64) unique not null,
     userpassword varchar(64) not null,
     fullName varchar (64) not null,
@@ -53,8 +80,8 @@ create table Users
 
 create table Outlets
 (
-    outid integer,
-    rid integer not null,
+    outid uuid,
+    rid uuid not null,
     openingTime time not null,
     closingTime time not null,
     totalSeats integer not null,
@@ -64,8 +91,8 @@ create table Outlets
 
 create table Branches
 ( 
-    rid integer,
-    outid integer,
+    rid uuid,
+    outid uuid,
     postalCode varchar(6) not null,
     unitNo varchar(16),
     area varchar(128) not null,
@@ -77,7 +104,7 @@ create table Branches
 
 create table Seats
 (
-    outid integer not null,
+    outid uuid not null,
     openingHour time not null,
     openingDate date not null,
     seatsAvailable integer,
@@ -87,9 +114,9 @@ create table Seats
 
 create table Reservations
 (
-    rsvid integer,
-    userid integer,
-    outid integer not null,
+    rsvid uuid,
+    userid uuid,
+    outid uuid not null,
     rsvDate date not null,
     rsvHour time not null,
     seatsAssigned integer not null,
@@ -99,39 +126,37 @@ create table Reservations
 
 create table Points
 (
-    pid serial,
+    pid uuid,
     pointNumber integer not null,
-    rsvid integer references Reservations,
-    userid integer references Members,
+    rsvid uuid references Reservations,
+    userid uuid references Members,
     primary key (pid)
 );
 
 create table Ratings
 (
-    ratingid serial,
-    userid integer,
-    rid integer,
+    ratingid uuid,
+    rid uuid,
     ratingscore integer not null,
     review varchar(1024),
     primary key (ratingid),
-    foreign key (userid) references Users,
     foreign key (rid) references Restaurants
 );
 
 
 create table Preferences
 (
-    userid integer,
+    userid uuid,
     area varchar(64),
     maxPrice numeric(8, 2),
     avgPrice numeric(8, 2),
     minScore integer,
     primary key (userid),
     foreign key (userid) references Members
+);
 
-	CREATE OR REPLACE FUNCTION func_checkSeats()
-
-RETURN TRIGGER AS 
+CREATE OR REPLACE FUNCTION func_checkSeats()
+RETURNS TRIGGER AS 
 $$
 	DECLARE totalSeats integer;
 			seatsTaken integer;
@@ -139,28 +164,26 @@ $$
 		SELECT seatsAvailable INTO totalSeats
 		FROM Seats 
 		WHERE NEW.outid = Seats.outid 
-		AND NEW.rsvHour = Seats.openingHour
-		AND NEW.rsvdate = Seats.openingDate;
+		AND NEW.rsvHour = Seats.openinghour
+		AND NEW.rsvdate = Seats.openingdate;
 
 		SELECT sum(seatsAssigned) INTO seatsTaken
 		FROM Reservations
-		WHERE New.oid = Reservations.outid
-		AND NEW.rsvHour = Reservations.rsvHour
-		AND NEW.rsvdate = Reservations.rsvDate;
+		WHERE New.outid = Reservations.outid
+		AND NEW.rsvhour = Reservations.rsvhour
+		AND NEW.rsvdate = Reservations.rsvdate;
 
 		IF (seatsTaken + NEW.seatsAssigned > totalSeats) THEN
 			RAISE NOTICE 'Insufficient seats for reservation.';
 			RETURN NULL;
 		ELSE
-			RETURN (NEW.rsvid, NEW.oid, NEW.outid, NEW.rsvDate. NEW.rsvHour, NEW.seatsAssigned);
+			RETURN (NEW.rsvid, NEW.userid, NEW.outid, NEW.rsvdate. NEW.rsvhour, NEW.seatsassigned);
 		END IF;
-	END;
-$$
-LANGUAGE plpgsql;
+	END; 
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER seats_check
 	BEFORE INSERT OR UPDATE 
 	ON Reservations
 	FOR EACH ROW
-	EXECUTE PROCEDURE func_checkSeats();
-); 
+	EXECUTE PROCEDURE func_checkSeats(); 

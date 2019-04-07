@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>	
+<body>
+<% include partials/menuloggedin %>
+
+<table class="m2 p2" style="width:100%; color:#FFD700;">
+	<% for(var i=0; i<dataView.length; i++) { %>
+	<tr class="rows m2">
+			<td colspan="3"><hr/><h4><%= dataView[i].rname%>(<%= dataView[i].area%>)</h4></td>
+	</tr>
+	<tr class="rows m2">
+		<td class="m2 p2">
+			<div>
+				Reserved Date:
+				<span><%= dataView[i].rsvdate%></span>
+		
+			</div>
+			<div>
+				Reserved Hour:
+				<span><%= dataView[i].rsvhour%></span>
+			</div>
+		</td>	
+		<td class="m2 p2">
+			<div>
+				Number of seats booked: <%= dataView[i].seatsassigned%>
+			</div>
+		</td>
+	</tr>
+	<% } %>
+</table>
+</body>
+</html>

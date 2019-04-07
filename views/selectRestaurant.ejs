@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Page Title -->
+		<% include partials/head %> 
+		<% include partials/script %>
+
+	</head>
+	<body>
+		<% include partials/menu %>
+		<table class="table">
+			<tr>
+				<td colspan="1"> 
+					<form id="html_form" action="/filterParameter" role="form" method="post">
+						<div class="dropdown">
+							<select id="dataRestaurantSelect" class="form-control custom-select"  name="dataRestaurantSelect">
+								<option value="" selected>Any Restaurant</option>
+								<% for(var i=0; i<dataRestaurant.length; i++) { %>
+								<option value="<%= dataRestaurant[i].rname%>"><%= dataRestaurant[i].rname%></option>
+								<% } %>
+							</select>
+						</div>
+						<div class="dropdown">
+							<select id="dataRestaurantAreaSelect" class="form-control custom-select"  name="dataRestaurantAreaSelect">
+								<option value="" selected>Any Area</option>
+								<% for(var i=0; i<dataRestaurantArea.length; i++) { %>
+								<option value="<%= dataRestaurantArea[i].area%>"><%= dataRestaurantArea[i].area%></option>
+								<% } %>
+							</select>
+						</div>
+						<button class="btn btn-secondary p2" type="submit" id="selectBtn">
+							Search
+						</button>	
+					</form>
+				</td>
+				<td colspan="4">
+					<table class="m2 p2" style="width:100%; color:#FFD700;">
+						<% for(var i=0; i<dataView.length; i++) { %>
+						<tr class="rows m2">
+						
+								<td colspan="3"><hr/><h4><%= dataView[i].rname%> (<%= dataView[i].area%>)</h4></td>
+						</tr>
+						<tr class="rows m2">
+							<td class="m2 p2">
+								<div>
+									Total Seats: 
+									<span><%= dataView[i].totalseats%></span>
+							
+								</div>
+								<div>
+									Price: <=
+									<span>$ <%= dataView[i].maxprice%></span>
+								</div>
+							</td>	
+							<td class="m2 p2">
+								<div>
+									Opening Hours: <%= dataView[i].openingtime%>
+								</div>
+								<div>
+									Closing Hours: <%= dataView[i].closingtime%>
+								</div>
+							</td>
+							<td class="m2 p2">
+								<form action="/reserveRestaurant" method = "post" id = "form_valid">
+									<button class="btn btn-secondary p2" type="submit" id="selectBtn" value= <%= dataView[i].outid%> name ="selectBtn">
+											SELECT RESTAURANT
+									</button>	
+								</form>
+							</td>
+						</tr>
+						<% } %>
+					</table>
+				</td>
+			</tr>
+		</table>	
+	</body>
+</html>
+																												

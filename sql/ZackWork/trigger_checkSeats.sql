@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION func_checkSeats()
-RETURN TRIGGER AS 
+RETURNS TRIGGER AS 
 $$
 DECLARE totalSeats integer;
         seatsTaken integer;
@@ -12,7 +12,7 @@ BEGIN
 
     SELECT sum(seatsAssigned) INTO seatsTaken
     FROM Reservations
-    WHERE New.oid = Reservations.outid
+    WHERE New.outid = Reservations.outid
     AND NEW.rsvHour = Reservations.rsvHour
     AND NEW.rsvdate = Reservations.rsvDate;
 
@@ -20,11 +20,13 @@ BEGIN
         RAISE NOTICE 'Insufficient seats for reservation.';
         RETURN NULL;
     ELSE
-        RETURN (NEW.rsvid, NEW.oid, NEW.outid, NEW.rsvDate. NEW.rsvHour, NEW.seatsAssigned);
+        RETURN (NEW.rsvid, NEW.userid, NEW.outid, NEW.rsvDate, NEW.rsvHour, NEW.seatsAssigned);
     END IF;
 END;
 $$
 LANGUAGE plpgsql;
+
+drop trigger if exists seats_check on reservations;
 
 CREATE TRIGGER seats_check
 BEFORE INSERT OR UPDATE 

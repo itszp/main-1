@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
  <% include partials/head %> 
 </head>
 <body>
 <% include partials/menu_restaurants %>
-<div class="container-fluid bg-3 text-center">    
-  <h3><%= page %></h3><br>
-  <div class="row">
-    <div class="col-sm-middle">
-      <p>TO INSERT A FORM ALLOWING RESTAURANTS TO INSERT DATA.</p>
-    </div>
-  </div>
-</div>
+<form action = "/for_restaurants" method = "post" role = "form" id = "form_valid">
+		<label color="Gold" >Restaurant Name</label>
+		<input type ="text" name = "Restaurant_Name" id = "Restaurant_Name" placeholder="Enter a name" required="required">
+		<label color="Gold" >Number of Outlets</label>
+		<input type ="text" name = "Number_Outlets" id = "Number_Outlets" placeholder="Enter a number"> </br>
+		<button type="submit" style = "block" class="btn btn-primary">SUBMIT</button>
+</form>
 </body>
 <% include partials/script %>
 </html>

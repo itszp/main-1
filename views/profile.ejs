@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>	
+<body>
+<% include partials/menuloggedin %>
+
+<div class="card-header">
+	<i class="fas fa-address-card"></i> &nbsp; Basic Information
+</div>
+<div class="card-body">
+	<div class="form-group row">
+		<label for="username" class="col-sm-1"><b> &nbsp;&nbsp; Your username</b></label>
+			<label for="username"><b><%= user %></b></label>
+	</div>
+	<div class="form-group row">
+		<label for="fullname" class="col-sm-1"><b> &nbsp;&nbsp; Your full name:</b></label>
+			<label for="fullname"><b><%= fullname %></b></label>
+	</div>
+	<div class="form-group row">
+		<label for="phoneno" class="col-sm-1"><b> &nbsp;&nbsp; Phone number:</b></label>
+			<label for="phoneno"><b><%= phoneno %></b></label>
+	</div>
+	<div class="card-header">
+		<i class="fas fa-key"></i><i> &nbsp; Fill in the form below if you want to change your phone number.</i>
+	</div>
+	<form method="post" action="/update_phoneno">
+	<div class="card-body">
+		<div class="form-group row">
+			<label for="phoneno" class="col-sm-1 col-form-label"><b>&nbsp;&nbsp; New Phone No:</b></label>
+			<div class="col-sm-10">
+				<input type="changepassword" required="required" class="form-control" id="phoneno" placeholder="Your new phone number" name="phoneno" />
+			</div>
+			<button type="updatephoneno" class="btn btn-secondary">Update Phone Number</button>
+		</div>
+	</div>
+	</form>
+	<div class="card-header">
+		<i class="fas fa-key"></i><i> &nbsp; Fill in the form below if you want to change to a new password. Minimum of 8 characters</i>
+	</div>
+	<form method="post" action="/update_password">
+	<div class="card-body">
+		<div class="form-group row">
+			<label for="password" class="col-sm-1 col-form-label"><b>&nbsp;&nbsp; New Password:</b></label>
+			<div class="col-sm-10">
+				<input type="changepassword" required="required" class="form-control" id="password" placeholder="Your new password" name="password" pattern=".{8,}" />
+			</div>
+			<button type="updatepasswordsubmit" class="btn btn-secondary">Update Password</button> </br>
+		</div>
+	</div>
+	</form>
+	<form method="post" action="/reservationHistory">
+	<button type="updatepasswordsubmit" class="btn btn-secondary">RESERVATION HISTORY</button> </br>
+	</form>
+</div>
+</body>
+</html>

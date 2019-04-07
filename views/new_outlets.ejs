@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <% include partials/double_head %> 
+</head>
+<script>
+	var tagsToReplace = {
+		'&': '&tmp;',
+		'<': '&lt;',
+		'>': '&gt;'
+	};
+	function replaceTag(tag){
+		return tagsToReplace[tag] || tag;
+	}
+	function safe_tags_replace(str){
+		return str.replace(/[&<>]/g, replaceTag);
+	}
+	function sanitise(){
+		var input = document.getElementById('Restaurant_Name').value;
+		input = safe_tags_replace(input);
+		document.getElementById('Restaurant_Name').value = input;
+		document.getElementById("form_valid").submit();
+	}
+</script>
+<script>
+function addRow(){
+
+
+    var table = document.getElementById("myTable");
+    var rows = document.getElementById("myTable").rows.length;
+	
+    // add row 
+    var row = table.insertRow(rows);
+
+    // add input in cell 
+    for(var i = 0; i < 6; i++){
+		var cell1 = row.insertCell(i);
+        var inputItem = document.createElement('input');
+		inputItem.setAttribute('type', 'text');
+		if(i == 0){
+			inputItem.setAttribute('id', 'postal_code');
+			inputItem.setAttribute('name', 'postal_code');
+        }
+		else if(i == 1){
+			inputItem.setAttribute('id', 'unit_number');
+			inputItem.setAttribute('name', 'unit_number');
+		}
+		else if(i == 2){
+			inputItem.setAttribute('id', 'area');
+			inputItem.setAttribute('name', 'area');
+		}
+		else if(i == 3){
+			inputItem.setAttribute('id', 'total_seats');
+			inputItem.setAttribute('name', 'total_seats');
+		}
+		else if(i == 4){
+		inputItem.setAttribute('id', 'opening_hours');
+			inputItem.setAttribute('name', 'opening_hours');
+		}
+		else if(i == 5){
+			inputItem.setAttribute('id', 'closing_hours');
+			inputItem.setAttribute('name', 'closing_hours');
+		}
+		cell1.appendChild(inputItem);
+    }  
+
+}
+</script>
+
+<% include partials/menu_restaurants %>
+
+    <!-- Table -->
+<!--<button id="add_btn" onclick="addRow()">Add new row</button>-->
+<form action="/for_restaurants/outlets" method="post" id = "form_valid">	
+    <table id="myTable" class="table" style="color:#FFD700;">
+      <tr>
+        <th> Postal Code </th>
+        <th> Unit Number </th>
+        <th> Area </th>
+        <th> Total Seats </th>
+        <th> Opening Time </th>
+		<th> Closing Time </th>
+	  </tr>
+
+      <tr class="unit-table">
+        <td>
+          <input type="outlettext" id="postal_code" name ="postal_code" required>
+        </td>
+		<td>
+          <input type="outlettext" id="unit_number" name="unit_number" required>
+        </td>
+        <td>
+          <input type="outlettext" id="area" name="area" required>
+        </td>
+        <td>
+          <input type="outlettext" id="total_seats" name="total_seats" required>
+        </td>
+        <td>
+          <input type="time" id="opening_time" name="opening_time" placeholder = "00:00:00 to 23:59:59" required>
+        </td>
+        <td>
+          <input type="time" id="closing_time" name="closing_time" placeholder = "00:00:00 to 23:59:59" required>
+        </td>
+      </tr>
+    </table>
+	
+	<table id="myTable2" class="table" style="color:#FFD700;">
+		<tr>
+        <th> Cuisine </th>
+	  </tr>
+		<tr class="unit-table2">
+			<td>
+			  <select id = "cuisinetype" name = "cuisinetype" style= "color: black; width: 250px; height:35px;" >
+			  <option value = "Western" >Western</option>
+			  <option value = "Fast Food">Fast Food</option>
+			  <option value = "Chinese">Chinese</option>
+			  <option value = "Korean">Korean</option>
+			  <option value = "Japanese">Japanese</option>
+			  <option value = "Thai">Thai</option>
+			  <option value = "Buffet">All you can eat buffet</option>
+			  <option value = "Steamboat">Steamboat</option>
+			</td>
+		</tr>
+	</table>
+ <button type = "submit" onclick="sanitise()">SUBMIT</button>
+ <input type = "checkbox" id = "submit_another" name = "submit_another" value = "yes" ><font color="Gold">&nbsp;Check this box to submit another outlet</font>
+</form>
+
+
+</body>
+<% include partials/script %>
+</html>

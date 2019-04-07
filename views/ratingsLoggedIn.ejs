@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<% include partials/head %> 
+</head>
+<body>
+	<% include partials/menuloggedin %>
+	
+	<h3 style="width:100%; color:#FFD700;">CHOOSE A PARTICULAR RESTAURANT TO RATE</h3>
+	<table class="m2 p2" style="width:100%; color:#FFD700;">
+						
+						<% for(var i=0; i<dataR.length; i++) { %>
+						<tr class="rows m2">
+						
+								<td colspan="3"><hr/><h4><%= dataR[i].rname%></h4></td>
+								
+						</tr>
+						<tr class="rows m2">
+							<td class="m2 p2">
+								<div>
+									Average Rating: 
+									<span><%= dataR[i].averagescore%></span>
+								</div>
+							</td>	
+						</tr>	
+						<tr>
+							<td class="m2 p2">
+								<form action="/ratings" method = "post" id = "form_valid">
+									<button class="btn btn-secondary p2" type="submit" id="selectBtn" value= <%= dataR[i].rid%>,<%= dataR[i].rname%> name ="selectBtn">
+											RATE THIS RESTAURANT
+									</button>	
+								</form>
+							</td>
+						</tr>
+						<% } %>
+					</table>
+</body>

@@ -9,20 +9,13 @@ const antiMiddleware = require('./antimiddle');
 
 const { Pool } = require('pg');
 const pool = new Pool({
-  user: 'postgres',
+    user: 'postgres',
 	host: 'localhost',
 	database: 'postgres',
 	password: 'matthewng1996',
 	port: 5432,
 });
 
-passport.serializeUser(function (user, cb) {
-  cb(null, user.username);
-})
-
-passport.deserializeUser(function (username, cb) {
-  findUser(username, cb);
-})
 
 function findUser (username, callback) {
 	pool.query(sql_query.query.userpass, [username], (err, data) => {
@@ -48,6 +41,14 @@ function findUser (username, callback) {
 		}
 	});
 }
+
+passport.serializeUser(function (user, cb) {
+  cb(null, user.username);
+})
+
+passport.deserializeUser(function (username, cb) {
+  findUser(username, cb);
+})
 
 function initPassport () {
   passport.use(new LocalStrategy(

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <% include partials/double_head %> 
+</head>
+<script>
+	var tagsToReplace = {
+		'&': '&tmp;',
+		'<': '&lt;',
+		'>': '&gt;'
+	};
+	function replaceTag(tag){
+		return tagsToReplace[tag] || tag;
+	}
+	function safe_tags_replace(str){
+		return str.replace(/[&<>]/g, replaceTag);
+	}
+	function sanitise(){
+		var input = document.getElementById('Restaurant_Name').value;
+		input = safe_tags_replace(input);
+		document.getElementById('Restaurant_Name').value = input;
+		document.getElementById("form_valid").submit();
+	}
+</script>
+<% include partials/menu_restaurants %>
+
+<form action="/add_menu" method="post" id = "form_valid">	
+    <table id="myTable" class="table" style="color:#FFD700;">
+      <tr>
+        <th> Food name </th>
+        <th> Price </th>
+	  </tr>
+    </table>
+	
+	<table id="myTable2" class="table" style="color:#FFD700;">
+		<tr class="unit-table2">
+			<td>
+			  <input type="outlettext" id="fname" name="fname" placeholder="Food name" required>
+			</td>
+			<td>
+			  <input type="outlettext" id="price" name="price" placeholder="Exclude dollar sign" required>
+			</td>
+		</tr>
+	</table>
+ <button type = "submit" onclick="sanitise()">SUBMIT</button>
+ <input type = "checkbox" id = "submit_another" name = "submit_another" value = "yes" ><font color="Gold">&nbsp;Check this box to submit another outlet</font>
+</form>
+</body>
+<% include partials/script %>
+</html>

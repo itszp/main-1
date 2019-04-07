@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<% include partials/double_head %>
+		<style>
+	  
+		.rating_stars {
+			margin-top: 15px;
+			display: inline-block;
+			font-size: 20px;
+			font-weight: 200;
+			color: #918f8f;
+			position: relative;
+		}
+
+		.rating_stars span .fa, .rating_stars span.active-low .fa-star-o, .rating_stars span.active-high .fa-star-o{
+			display: none;
+		}
+
+		.rating_stars span .fa-star-o{
+			display: inline-block;
+		}
+
+		.rating_stars span.s.active-high .fa-star{
+			display: inline-block; color: #feb645;
+		}
+
+		.rating_stars span.s.active-low .fa-star-half-o{
+			display: inline-block; color: #feb645;
+		}
+
+		.rating_stars span.r {
+			position: absolute;
+			top: 0;
+			height: 20px;
+			width: 10px;
+			left: 0;
+		}
+
+		.rating_stars span.r.r0_5 {left:0px;}
+		.rating_stars span.r.r1 {left:10px; width: 11px;}
+		.rating_stars span.r.r1_5 {left:21px; width: 13px;}
+		.rating_stars span.r.r2 {left:34px; width: 12px;}
+		.rating_stars span.r.r2_5 {left:46px; width: 12px;}
+		.rating_stars span.r.r3 {left:58px; width: 11px;}
+		.rating_stars span.r.r3_5 {left:69px; width: 12px;}
+		.rating_stars span.r.r4 {left:81px; width: 12px;}
+		.rating_stars span.r.r4_5 {left:93px; width: 12px;}
+		.rating_stars span.r.r5 {left:105px; width: 12px;}
+    </style>
+	<script>
+	  window.console = window.console || function(t) {};
+	</script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+	</head>
+	<body>
+		<% include partials/menuloggedin %>
+		<form action = "/ratings/rateRestaurant" method ="post" role = "form">
+		<div class="form-group" style = "text-align: center; font-size: 15px;">
+			<label for="title" style="color: Gold; font-size: 20px;"><b> Give Ratings for <%= title %></b></label>
+			<span class="rating_stars rating_0">
+			  <span class='s' data-low='0.5' data-high='1'><i class="fa fa-star-o"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star"></i></span>
+			  <span class='s' data-low='1.5' data-high='2'><i class="fa fa-star-o"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star"></i></span>
+			  <span class='s' data-low='2.5' data-high='3'><i class="fa fa-star-o"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star"></i></span>
+			  <span class='s' data-low='3.5' data-high='4'><i class="fa fa-star-o"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star"></i></span>
+			  <span class='s' data-low='4.5' data-high='5'><i class="fa fa-star-o"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star"></i></span>
+									
+			  <!--<span class='r r0_5' data-rating='1' data-value='0.5'></span>-->
+			  <span class='r r1' data-rating='1' data-value='1'></span>
+			  <!--<span class='r r1_5' data-rating='15' data-value='1.5'></span>-->
+			  <span class='r r2' data-rating='2' data-value='2'></span>
+			  <!--<span class='r r2_5' data-rating='25' data-value='2.5'></span>-->
+			  <span class='r r3' data-rating='3' data-value='3'></span>
+			  <!--<span class='r r3_5' data-rating='35' data-value='3.5'></span>-->
+			  <span class='r r4' data-rating='4' data-value='4'></span>
+			  <!--<span class='r r4_5' data-rating='45' data-value='4.5'></span>-->
+			  <span class='r r5' data-rating='5' data-value='5'></span>
+			</span>
+
+			<div class="values">
+			  
+			  <div>
+				<label>Rating Value</label><input type="text" name="selected_rating" id="rating_val" value="0">
+			</div>
+			</div>
+			
+			<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+			
+			<script>
+					jQuery(document).ready(function($) {
+				$('.rating_stars span.r').hover(function() {
+							// get hovered value
+							var selected_rating = $(this).data('selected_rating');
+							var value = $(this).data('value');
+							$(this).parent().attr('class', '').addClass('rating_stars').addClass('rating_'+selected_rating);
+							highlight_star(value);
+						}, function() {
+							// get hidden field value
+							var selected_rating = $("#selected_rating").val();
+							var value = $("#rating_val").val();
+							$(this).parent().attr('class', '').addClass('rating_stars').addClass('rating_'+selected_rating);
+							highlight_star(value);
+						}).click(function() {
+							// Set hidden field value
+							var value = $(this).data('value');
+							$("#rating_val").val(value);
+
+							var selected_rating = $(this).data('selected_rating');
+							$("#selected_rating").val(selected_rating);
+							
+							highlight_star(value);
+						});
+						
+						var highlight_star = function(selected_rating) {
+							$('.rating_stars span.s').each(function() {
+								var low = $(this).data('low');
+								var high = $(this).data('high');
+								$(this).removeClass('active-high').removeClass('active-low');
+								if (selected_rating >= high) $(this).addClass('active-high');
+								else if (selected_rating == low) $(this).addClass('active-low');
+							});
+						}
+				});
+			</script>
+			<script src="https://static.codepen.io/assets/editor/live/css_reload-5619dc0905a68b2e6298901de54f73cefe4e079f65a75406858d92924b4938bf.js"></script>
+			<br/>
+			<label for="review" style="color: Gold;"><b> Review (Optional)</b></label>
+			<textarea rows="16" cols="64" name='review' id='review'></textarea><br />
+			
+			<button class="btn btn-secondary p2" type="submit" id="selectBtn" name ="selectBtn">
+				Confirm Rating
+			</button>
+		</form>
+		</div>
+		
+	</body>
+</html>	

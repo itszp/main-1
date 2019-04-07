@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Page Title -->
+		<% include partials/head %> 
+		<% include partials/script %>
+
+	</head>
+	<body>
+		<% include partials/menuLoggedIn%>
+	<div class="form-group" style = "text-align: center; font-size: 15px;">
+		<td colspan="4">
+				<table class="m2 p2" style="width:100%; color:#FFD700;">
+					<tr class="rows m2">
+						<td colspan="3"><hr/><h4><%= dataInfo[0].rname%></h4></td>
+					</tr>
+					<tr class="rows m2">
+						<td class="m2 p2">
+							<div>
+								Cuisine: 
+								<span><%= dataInfo[0].cuisinetype%></span>
+							</div>
+							<div>
+								Location: 
+								<span><%= dataInfo[0].area%></span>
+							</div>
+							<div>
+								Price: <=
+								<span><%= dataInfo[0].maxprice%></span>
+							</div>
+						</td>	
+						<td class="m2 p2">
+							<div>
+								Opening Hours: <%= dataInfo[0].openingtime%>
+							</div>
+							<div>
+								Closing Hours: <%= dataInfo[0].closingtime%>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td> </br></br>
+			</div>
+		<form id="booking_form" action="/booked" role="form" method="post">
+			<div class="form-group" style = "text-align: center; font-size: 15px;">
+				<label for="rsvDate">RESERVATION DATE</label>
+				<input type="date" class="form-control" id="rsvDate" name="rsvDate" min='2019-15-04' max='2019-12-31'required>
+			</div>
+			<div class="form-group" style = "text-align: center; font-size: 15px;">
+				<label for="rsvHour">RESERVATION HOUR</label>
+				<select id="rsvHour" class="form-control custom-select"  name="rsvHour" style="width:500px; margin-left:37%;">
+				<% for(var i=0; i< noOfHours; i++) { %>
+				<option value="<%= earliestHr%>"><%= earliestHr++%></option>
+				<% } %>
+				</select>
+			</div>
+			<div class="form-group" style = "text-align: center; font-size: 15px;">
+				<label for="seatsAssigned">NUMBER OF SEATS</label>
+				<input type="text" class="form-control" id="seatsAssigned" name="seatsAssigned" placeholder="Fill in a number" required>
+			</div>
+			<div class="form-group" style = "text-align: center; font-size: 15px;">
+			<button type="submit" style = "block" class="btn btn-primary">&nbsp;SUBMIT</button>&nbsp;&nbsp;
+			<a href = "/select" class="button" style = "block" >CANCEL</a>
+			</div>
+		</form>
+		<script>
+			(function() {
+				window.addEventListener('load', function() {
+					var forms = [document.getElementById('booking_form')];
+					var validation = Array.prototype.filter.call(forms, function(form) {
+						form.addEventListener('submit', check, false);
+					});
+				}, false);
+			})();
+		</script>
+		<script>
+		(function() {
+			window.addEventListener('load', function() {
+				var today = new Date();
+				var dd = today.getDate();
+				var mm = today.getMonth()+1;
+				var yyyy = today.getFullYear();
+				 if(dd<10){
+						dd='0'+dds
+					} 
+					if(mm<10){
+						mm='0'+mm
+					} 
+				today = yyyy+'-'+mm+'-'+dd;
+				document.getElementById("rsvDate").setAttribute("min", today);
+			})
+		})();
+		</script>
+	</body>
+</html>
+			
