@@ -143,3 +143,163 @@ create table Preferences
     primary key (userid),
     foreign key (userid) references Members
 ); 
+
+
+-- Updates Seats Based on Opens
+CREATE OR REPLACE FUNCTION func_createSeats()
+RETURNS TRIGGER AS 
+$$
+DECLARE openHour time;
+        closingHour time;
+        numOfSeats integer;
+
+BEGIN
+    SELECT openingTime INTO openHour
+    FROM Outlets 
+    WHERE NEW.outid = Outlets.outid;
+
+    SELECT closingTime INTO closingHour
+    FROM Outlets 
+    WHERE NEW.outid = Outlets.outid;
+
+    SELECT totalSeats INTO numOfSeats
+    FROM Outlets 
+    WHERE NEW.outid = Outlets.outid;
+
+    WHILE (openHour < closingHour) LOOP
+        INSERT INTO Seats(outid, openingHour, openingDate, seatsAvailable)
+        VALUES (NEW.outid, openHour, NEW.openingDate, numOfSeats);
+        
+        SELECT openHour + '1hour'::interval INTO openHour;
+    END loop;
+
+    RETURN NULL;
+END;
+$$
+LANGUAGE plpgsql;
+
+drop trigger if exists create_Seats on Opens;
+
+CREATE TRIGGER create_Seats
+AFTER INSERT
+ON Opens
+FOR EACH ROW
+EXECUTE PROCEDURE func_createSeats();
+
+
+-- trigger to check available seats and valid time before insert into reservations
+CREATE OR REPLACE FUNCTION func_checkSeats()
+RETURNS TRIGGER AS 
+$$
+DECLARE totalSeats integer;
+        seatsTaken integer;
+BEGIN 
+    SELECT seatsAvailable INTO totalSeats
+    FROM Seats 
+    WHERE NEW.outid = Seats.outid 
+    AND NEW.rsvHour = Seats.openingHour
+    AND NEW.rsvdate = Seats.openingDate;
+
+    SELECT sum(seatsAssigned) INTO seatsTaken
+    FROM Reservations
+    WHERE New.outid = Reservations.outid
+    AND NEW.rsvHour = Reservations.rsvHour
+    AND NEW.rsvdate = Reservations.rsvDate;
+
+    IF (seatsTaken + NEW.seatsAssigned > totalSeats) THEN
+        RAISE NOTICE 'Insufficient seats for reservation.';
+        RETURN NULL;
+    ELSIF (NEW.rsvDate < current_date) THEN 
+        RAISE NOTICE 'Unable to make reservation on an earlier date.';
+        RETURN NULL;
+    ELSIF (new.rsvDate = current_date and NEW.rsvHour < current_time + '1hour'::interval) THEN
+        RAISE NOTICE 'Please make booking at least one hour in advance.';
+        RETURN NULL;
+    ELSE
+        RETURN (NEW.rsvid, NEW.userid, NEW.outid, NEW.rsvDate, NEW.rsvHour, NEW.seatsAssigned);
+    END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+drop trigger if exists seats_check on reservations;
+
+CREATE TRIGGER seats_check
+BEFORE INSERT OR UPDATE 
+ON Reservations
+FOR EACH ROW
+EXECUTE PROCEDURE func_checkSeats();
+
+
+
+-- trigger to give points
+CREATE OR REPLACE FUNCTION func_awardPoints()
+RETURNS TRIGGER AS
+$$
+DECLARE isMember integer;
+begin
+    SELECT count(*) INTO isMember  
+    FROM Members
+    WHERE NEW.userid = Members.userid;
+
+    IF (isMember = 1) THEN
+        INSERT INTO Points (pointNumber, rsvid, userid)
+        VALUES (10, NEW.rsvid, NEW.userid);
+        RAISE NOTICE '10 points awarded.';
+       	RETURN NULL;
+        
+    ELSE
+        RETURN NULL;
+    END IF;
+end;
+$$
+LANGUAGE plpgsql;
+
+drop trigger if exists award_points on reservations;
+CREATE TRIGGER award_points
+AFTER INSERT
+ON Reservations
+FOR EACH ROW
+EXECUTE PROCEDURE func_awardPoints();
+
+
+-- trigger to upgrade guest to member. new member gets 30 points.
+CREATE OR REPLACE FUNCTION func_upgradeMember()
+RETURNS TRIGGER AS 
+$$
+DECLARE isGuest integer;
+        totalRsv integer;
+BEGIN 
+    SELECT count(*) INTO isGuest
+    FROM Guests
+    WHERE NEW.userid = Guests.userid;
+
+    SELECT count(rsvid) INTO totalRsv
+    FROM Reservations
+    WHERE NEW.userid = Reservations.userid;
+
+    IF (isGuest = 1) THEN
+        IF (totalRsv = 3) THEN
+            INSERT INTO Members (userid)
+           	VALUES (NEW.userid);
+            DELETE FROM Guests WHERE (userid = NEW.userid);
+            INSERT INTO Points (pointNumber, rsvid, userid)
+            VALUES (30, NEW.rsvid, NEW.userid);
+            RETURN NULL;
+        ELSE 
+            RETURN NULL;
+        END IF;
+    ELSE
+        RETURN NULL;
+    END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS upgrade_Member ON Reservations;
+
+CREATE TRIGGER upgrade_Member
+AFTER INSERT
+ON Reservations
+FOR EACH ROW
+EXECUTE PROCEDURE func_upgradeMember();

@@ -11,7 +11,7 @@ begin
         INSERT INTO Points (pointNumber, rsvid, userid)
         VALUES (10, NEW.rsvid, NEW.userid);
         RAISE NOTICE '10 points awarded.';
-       	return null;
+       	RETURN NULL;
         
     ELSE
         RETURN NULL;

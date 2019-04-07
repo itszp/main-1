@@ -11,13 +11,19 @@ BEGIN
     AND NEW.rsvdate = Seats.openingDate;
 
     SELECT sum(seatsAssigned) INTO seatsTaken
-    FROM Reservationsa
+    FROM Reservations
     WHERE New.outid = Reservations.outid
     AND NEW.rsvHour = Reservations.rsvHour
     AND NEW.rsvdate = Reservations.rsvDate;
 
     IF (seatsTaken + NEW.seatsAssigned > totalSeats) THEN
         RAISE NOTICE 'Insufficient seats for reservation.';
+        RETURN NULL;
+    ELSIF (NEW.rsvDate < current_date) THEN 
+        RAISE NOTICE 'Unable to make reservation on previous day.';
+        RETURN NULL;
+    ELSIF (NEW.rsvHour < current_time + '1hour'::interval) THEN
+        RAISE NOTICE 'Please make booking at least one hour in advance.'
         RETURN NULL;
     ELSE
         RETURN (NEW.rsvid, NEW.userid, NEW.outid, NEW.rsvDate, NEW.rsvHour, NEW.seatsAssigned);

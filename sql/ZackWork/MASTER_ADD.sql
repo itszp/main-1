@@ -2,8 +2,8 @@ DELETE FROM Preferences;
 DELETE FROM Points;
 DELETE FROM Reservations;
 DELETE FROM Food;
-DELETE FROM Opens;
 DELETE FROM Seats;
+DELETE FROM Opens;
 DELETE FROM Ratings;
 DELETE FROM Branches;
 DELETE FROM Outlets;
@@ -20,11 +20,14 @@ INSERT INTO Users (userid, username, userpassword, fullname, phoneNo) VALUES
 (2, 'anyhowtouch', 'password', 'Monica Cheng', '83321345'),
 (3, 'guest1', 'password', 'Lim Ko Pi', '63335333');
 
-INSERT INTO Members (userid) VALUES
-(1),
-(2);
 
-INSERT INTO Guests (userid) VALUES
+-- Auto insert once guest makes more than 4 reservations
+--INSERT INTO Members (userid) VALUES
+--(2);
+
+INSERT INTO Guests (userid) values
+(1),
+(2),
 (3);
 
 INSERT INTO Cuisines (cuisineType) VALUES
@@ -88,14 +91,14 @@ INSERT INTO Ratings (rid, userid, ratingscore, review) VALUES
 
 -- Opens creates seats using trigger 
 INSERT INTO Opens (outid, openingDate) VALUES 
-(1, '24-03-2019'),
-(2, '24-03-2019'),
-(3, '24-03-2019'),
-(4, '24-03-2019'),
-(5, '24-03-2019'),
-(6, '24-03-2019'),
-(7, '24-03-2019'),
-(8, '24-03-2019');
+(1, '24-05-2019'),
+(2, '24-05-2019'),
+(3, '24-05-2019'),
+(4, '24-05-2019'),
+(5, '24-05-2019'),
+(6, '24-05-2019'),
+(7, '24-05-2019'),
+(8, '24-05-2019');
 
 --INSERT INTO Seats (outid, openingHour, openingDate, seatsAvailable) VALUES
 --(1, '12:00', '24-03-2019', 100),
@@ -203,20 +206,21 @@ INSERT INTO Food (rid, fname, price) VALUES
 (5, 'Vanilla Milkshake', 3),
 (5, 'Edi Burger', 4.50);
 
+-- Inserts points via trigger if member
 INSERT INTO Reservations (rsvid, userid, outid, rsvdate, rsvHour, seatsAssigned) VALUES
-(1, 1, 1, '24-03-2019', '20:00', 25), 
-(2, 2, 1, '24-03-2019', '20:00', 5),
-(3, 3, 4, '24-03-2019', '14:00', 2);
+(1, 1, 1, '24-05-2019', '20:00', 25), 
+(2, 2, 1, '24-05-2019', '20:00', 5),
+(3, 2, 1, '24-05-2019', '20:00', 5),
+(5, 3, 4, '24-05-2019', '14:00', 2),
+(6, 1, 1, '24-05-2019', '11:00', 25);
 
-INSERT INTO Points (pointNumber, rsvid, userid) VALUES
-(50, 1, 1),
-(20, 2, 2);
+INSERT INTO Reservations (rsvid, userid, outid, rsvdate, rsvHour, seatsAssigned) VALUES
+(4, 2, 1, '24-05-2019', '20:00', 5);
+
+
+-- userid id 1 becomes members after this
+--INSERT INTO Reservations (rsvid, userid, outid, rsvdate, rsvHour, seatsAssigned) VALUES
+--(8, 1, 1, '24-03-2019', '20:00', 5);
 
 INSERT INTO Preferences (userid, area, maxPrice, avgPrice, minScore) VALUES
-(1, 'CENTRAL', 50, 30, 3),
-(2, null, 30, 20, 3);
-
-select * from seats
- 
-
-
+(2, 'CENTRAL', 50, 30, 3);

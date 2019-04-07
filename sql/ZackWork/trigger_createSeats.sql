@@ -25,7 +25,7 @@ BEGIN
         SELECT openHour + '1hour'::interval INTO openHour;
     END loop;
 
-    RETURN NEW;
+    RETURN NULL;
 END;
 $$
 LANGUAGE plpgsql;
